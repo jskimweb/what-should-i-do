@@ -1,8 +1,8 @@
 <template>
   <Header></Header>
-  <Input></Input>
-  <List></List>
-  <Footer></Footer>
+  <Input @addItem="addItem"></Input>
+  <List :propsdata="items" @removeItem="removeItem" @toggleItem="toggleItem"></List>
+  <Footer @clearItems="clearItems"></Footer>
 </template>
 
 <script>
@@ -13,12 +13,46 @@
 
   export default {
     name: 'App',
+    data() {
+      return {
+        items: []
+      }
+    },
+    methods: {
+      addItem(inputText) {
+        const obj = { completed: false, item: inputText };
+        localStorage.setItem(inputText, JSON.stringify(obj));
+        this.items.push(obj);
+      },
+      removeItem(item, index) {
+				localStorage.removeItem(item.item);
+				this.items.splice(index, 1);
+      },
+      toggleItem(item, index) {
+        this.items[index].completed = !this.items[index].completed;
+				localStorage.removeItem(item.item);
+				localStorage.setItem(item.item, JSON.stringify(item));
+      },
+      clearItems() {
+        localStorage.clear();
+        this.items = [];
+      }
+    },
+    created() {
+			if (localStorage.length > 0) {
+				for (let i = 0; i < localStorage.length; i++) {
+					if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
+						this.items.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+					}
+				}
+			}
+		},
     components: {
       Header,
       Input,
       List,
       Footer
-    }
+    },
   }
 </script>
 

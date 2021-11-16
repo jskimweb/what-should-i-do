@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<ul>
-			<li v-for="(item, index) in items" :key="index" class="list-box shadow">
-				<i @click="toggleComplete(item)" :class="{checkBtnCompleted: item.completed}" class="fas fa-check check-btn"></i>
+			<li v-for="(item, index) in propsdata" :key="index" class="list-box shadow">
+				<i @click="toggleItem(item, index)" :class="{checkBtnCompleted: item.completed}" class="fas fa-check check-btn"></i>
 				<span :class="{textCompleted: item.completed}">{{ item.item }}</span>
 				<span @click="removeItem(item, index)" class="remove-btn">
 					<i class="fas fa-trash-alt"></i>
@@ -15,29 +15,13 @@
 <script>
 	export default {
 		name: 'List',
-		data() {
-			return {
-				items: []
-			}
-		},
+		props: ['propsdata'],
 		methods: {
 			removeItem(item, index) {
-				localStorage.removeItem(item);
-				this.items.splice(index, 1);
+				this.$emit('removeItem', item, index);
 			},
-			toggleComplete(item) {
-				item.completed = !item.completed;
-				localStorage.removeItem(item.item);
-				localStorage.setItem(item.item, JSON.stringify(item));
-			}
-		},
-		created() {
-			if (localStorage.length > 0) {
-				for (let i = 0; i < localStorage.length; i++) {
-					if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
-						this.items.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-					}
-				}
+			toggleItem(item, index) {
+				this.$emit('toggleItem', item, index);
 			}
 		}
 	}

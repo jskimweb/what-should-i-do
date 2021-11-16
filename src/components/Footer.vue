@@ -9,7 +9,7 @@ export default {
 	name: 'Footer',
 	methods: {
 		clearItems() {
-			localStorage.clear();
+			this.$emit('clearItems');
 		}
 	}
 }

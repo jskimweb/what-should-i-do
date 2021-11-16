@@ -4,28 +4,45 @@
 		<span @click="addItem" class="add-btn">
 			<i class="fas fa-plus"></i>
 		</span>
+
+		<Modal v-if="showModal">
+			<template v-slot:header>
+				<h3>경고!</h3>
+				<i @click="showModal = false" class="fas fa-times closeModalBtn"></i>
+			</template>
+			<template v-slot:body>
+				<p>무언가를 입력하세요.</p>
+			</template>
+		</Modal>
 	</div>
 </template>
 
 <script>
+	import Modal from './common/Modal.vue';
+
 	export default {
 		name: 'Input',
 		data() {
 			return {
-				inputText: ''
+				inputText: '',
+				showModal: false
 			}
 		},
 		methods: {
 			addItem() {
-				if (this. inputText !== '') {
-					let obj = { completed: false, item: this.inputText };
-					localStorage.setItem(this.inputText, JSON.stringify(obj));
+				if (this.inputText !== '') {
+					this.$emit('addItem', this.inputText);
 					this.clearInput();
+				} else {
+					this.showModal = !this.showModal;
 				}
 			},
 			clearInput() {
 				this.inputText = '';
 			}
+		},
+		components: {
+			Modal
 		}
 	}
 </script>
@@ -64,5 +81,11 @@
 		font-size: 1.6rem;
 		vertical-align: middle;
 		color: white;
+	}
+
+	.closeModalBtn {
+		font-size: 17.5px;
+		color: #42b983;
+		cursor: pointer;
 	}
 </style>

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-	import Modal from './common/Modal.vue';
+	import Modal from './common/Modal.vue'
 
 	export default {
 		name: 'Input',
@@ -31,7 +31,7 @@
 		methods: {
 			addItem() {
 				if (this.inputText !== '') {
-					this.$emit('addItem', this.inputText);
+					this.$store.commit('addItem', this.inputText);
 					this.clearInput();
 				} else {
 					this.showModal = !this.showModal;

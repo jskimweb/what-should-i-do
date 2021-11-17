@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<ul>
-			<li v-for="(item, index) in propsdata" :key="index" class="list-box shadow">
-				<i @click="toggleItem(item, index)" :class="{checkBtnCompleted: item.completed}" class="fas fa-check check-btn"></i>
+			<li v-for="(item, index) in this.getItems" :key="index" class="list-box shadow">
+				<i @click="toggleItem({item, index})" :class="{checkBtnCompleted: item.completed}" class="fas fa-check check-btn"></i>
 				<span :class="{textCompleted: item.completed}">{{ item.item }}</span>
 				<span @click="removeItem(item, index)" class="remove-btn">
 					<i class="fas fa-trash-alt"></i>
@@ -13,16 +13,15 @@
 </template>
 
 <script>
+	import { mapGetters, mapMutations } from 'vuex'
+
 	export default {
 		name: 'List',
-		props: ['propsdata'],
+		computed: {
+			...mapGetters(['getItems'])
+		},
 		methods: {
-			removeItem(item, index) {
-				this.$emit('removeItem', item, index);
-			},
-			toggleItem(item, index) {
-				this.$emit('toggleItem', item, index);
-			}
+			...mapMutations(['removeItem', 'toggleItem'])
 		}
 	}
 </script>
@@ -55,7 +54,6 @@
 		text-decoration: line-through;
 		opacity: .5;
 	}
-
 
 	.list-box .remove-btn {
 		float: right;

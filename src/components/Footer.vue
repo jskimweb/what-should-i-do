@@ -5,12 +5,12 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
 	name: 'Footer',
 	methods: {
-		clearItems() {
-			this.$emit('clearItems');
-		}
+		...mapMutations(['clearItems'])
 	}
 }
 </script>

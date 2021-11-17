@@ -1,6 +1,6 @@
 <template>
 	<header>
-		<h1>What Should I Do?</h1>
+		<h1>What Should I Do</h1>
 	</header>
 </template>
 
